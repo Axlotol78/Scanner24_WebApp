@@ -1,4 +1,4 @@
-const backend_endpoint = 'http://127.0.0.1:3000';
+const backend_endpoint = 'https://scanner24-webapp.onrender.com'
 
 //extract params from url:
 function getParamsFromUrl() {
