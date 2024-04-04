@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
-const mongoConnectionURL = 'mongodb+srv://abdullahehsan4242:O0MvjquI37lfyMBf@scanner24.2xgiyiv.mongodb.net/?retryWrites=true&w=majority&appName=Scanner24'
-
+const mongoConnectionURL = 'mongodb+srv://mainscanner24:e88jwCImY2Y625YD@scanner24.rlhcyoa.mongodb.net/?retryWrites=true&w=majority&appName=Scanner24'
+// e88jwCImY2Y625YD
 export const mongo = await mongoose.connect(mongoConnectionURL, {
     dbName: "scanner24"
 })
