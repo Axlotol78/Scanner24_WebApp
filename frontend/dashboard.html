@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <div class = "container">
+        <h1>Welcome to My Dashboard</h1>
+        <div id = "total"> Total Messages:</div>
+        <input type = "range" id = "number" value ="10" max = "100" min = "1">
+        <table class = "table table-striped">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Subject</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody id="messages">
+            </tbody>
+        </table>
+        <button id="signOutButton">Sign out</button>
+        <script src="dashboard.js"></script>
+    </div>
+</body>
+</html>
