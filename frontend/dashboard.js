@@ -1,6 +1,22 @@
 const backend_endpoint = 'https://scanner24-webapp.onrender.com'
 
 //extract params from url:
+
+function logout() {
+    localStorage.removeItem('auth');
+    window.location.href = 'index.html'; // Redirect to homepage
+}
+
+// Function to determine risk level based on spam chance
+function getRiskLevel(spamChance) {
+    if (spamChance <= 0.5) {
+        return 'No Risk';
+    } else if (spamChance <= 0.7) {
+        return 'Medium Risk';
+    } else {
+        return 'High Risk';
+    }
+}
 function getParamsFromUrl() {
     let url = window.location.href;
     let params = url.split('?')[1];
@@ -83,9 +99,9 @@ async function getEmails() {
                     spam_chance = score.score
                 }
             }
-            if (spam_chance > 0.5) {
-                row.classList.add('spam');
-            }
+            const riskLevelCell = document.createElement('td');
+            riskLevelCell.textContent = getRiskLevel(spam_chance);
+            row.appendChild(riskLevelCell)
 
             messagesContainer.appendChild(row);
         });
@@ -96,7 +112,7 @@ async function getEmails() {
         console.error('There was a problem with the fetch operation:', error);
     }
 }
-
+document.getElementById('signOutButton').addEventListener('click', logout);
 // Check if there's an authentication item in local storage
 const authItem = localStorage.getItem('auth');
 
