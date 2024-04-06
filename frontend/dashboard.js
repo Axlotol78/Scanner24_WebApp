@@ -50,6 +50,7 @@ async function getEmails() {
     
     try {
         const response = await fetch(backend_endpoint + '/get-emails?user_id=' + userObj.id);
+        console.log(userObj.id)
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -96,6 +97,32 @@ async function getEmails() {
     }
 }
 
-googleAuth().then(() => getEmails());
+// Check if there's an authentication item in local storage
+const authItem = localStorage.getItem('auth');
 
+if (!authItem) {
+  // If there's no authentication item
 
+  // Check if there's a code or an error in the URL parameters
+  const urlParams = new URLSearchParams(window.location.search);
+  const code = urlParams.get('code');
+  const error = urlParams.get('error');
+
+  if (!code && !error) {
+    // If there's neither a code nor an error in the URL parameters, redirect back to homepage
+    window.location.href = 'index.html';
+  } else {
+    // If there's a code or an error, run the Google auth function followed by getemails
+    googleAuth()
+      .then(() => {
+        getEmails();
+      })
+      .catch((err) => {
+        console.error('Error while authenticating:', err);
+        // Handle error as needed
+      });
+  }
+} else {
+  // If there's an authentication item, simply run the getemails function
+  getEmails();
+}
