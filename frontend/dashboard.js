@@ -100,8 +100,14 @@ async function getEmails() {
                 }
             }
             const riskLevelCell = document.createElement('td');
-            riskLevelCell.textContent = getRiskLevel(spam_chance);
+            const riskLevel = getRiskLevel(spam_chance)
+            riskLevelCell.textContent = riskLevel
             row.appendChild(riskLevelCell)
+            if (riskLevel === 'Medium Risk') {
+                row.classList.add('medium-risk');
+            } else if (riskLevel === 'High Risk') {
+                row.classList.add('high-risk');
+            }
 
             messagesContainer.appendChild(row);
         });

@@ -1,3 +1,7 @@
-.spam {
-    background-color: #ffcccc; /* Light red background for spam emails */
+.medium-risk {
+    background-color: #ffe5cc; /* Light orange */
+}
+
+.high-risk {
+    background-color: #ffcccc; /* Red */
 }
