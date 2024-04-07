@@ -45,8 +45,10 @@ const scopes = ["https://www.googleapis.com/auth/userinfo.profile",
                 "https://www.googleapis.com/auth/gmail.readonly", 
                 "https://mail.google.com/"]
 
-const inf_user = 'ZachBeesley'  
-const inf_model = 'Spam-Detector'
+// const inf_user = 'ZachBeesley'  
+// const inf_model = 'Spam-Detector'
+const inf_user = 'mariagrandury'
+const inf_model = 'distilbert-base-uncased-finetuned-sms-spam-detection'
 
 // Google login route
 app.get("/google-login", (req, res) => {
@@ -63,6 +65,7 @@ app.get("/google-login", (req, res) => {
 
 
 app.get("/google-auth-callback", async (req, res) => {
+  console.log("google-auth-callback")
   const code = req.query.code
   const find_code = await Code.findOne({code})
   if(find_code != null){
@@ -89,7 +92,7 @@ app.get("/google-auth-callback", async (req, res) => {
       //update user:
       console.log("old user")
       find_user.access_token = tokens.access_token
-      find_user.save()
+      await find_user.save()
     }else{
 
       console.log("new user")
@@ -109,9 +112,11 @@ app.get("/get-emails", async (req, res) => {
   const user_id = req.query.user_id
   const user = await User.findOne({id: user_id})
   if(user == null){
+    console.log("User not found")
     return res.send({error: 'User not found'})
   }
   if(user.access_token == null){
+    console.log("User access token not found")
     return res.send({error: 'User access token not found'})
   }
   const headers = {
@@ -124,15 +129,24 @@ app.get("/get-emails", async (req, res) => {
   const email_list = await email_list_data.json()
   console.log(email_list)
   
-  // console.log(email_list['messages'].slice(0, 5))
   const messages = email_list.messages
+  
   let new_msgs = []
-  for (const message of messages) {
-    if (!message.id in user.email_ids) {
-      new_msgs.push(message)
+  console.log('eh:', user.email_ids.length)
+  console.log('messages from g api:', messages.length)
+  if (user.email_ids.length == 0) {
+    new_msgs = messages
+  }else{
+
+    for (const message of messages) {
+      if (!message.id in user.email_ids) {
+        
+        new_msgs.push(message)
+      }
     }
   }
-  
+
+  console.log('new_msgs:', new_msgs.length)
   let return_arr = []
   
   await Promise.all(new_msgs.map(async (message) => {
@@ -160,7 +174,7 @@ app.get("/get-emails", async (req, res) => {
     if(result.error){
       return
     }
-    msg['user_id'] = user_id
+    msg_obj['user_id'] = user_id
     console.log('result:', result)
     msg_obj['id'] = message.id
     msg_obj['snippet'] = raw_message.snippet
@@ -175,15 +189,22 @@ app.get("/get-emails", async (req, res) => {
       }
     })
     Email.create(msg_obj)
-    return_arr.push(msg_obj)
+    // return_arr.push(msg_obj)
   }))
-  found_emails = await Email.find({user_id})
-  console.log("found_emails", found_emails)
+  const found_emails = await Email.find({user_id})
+  // console.log("found_emails", found_emails)
   if (found_emails.length > 0) {
     return_arr = return_arr.concat(found_emails)
   }
+  // const email_ids = return_arr.map(email => email.id)
+  user.email_ids = messages.map(message => message.id)
+  user.save()
   
-  console.log("hmm", return_arr)
+  
+  //sort by date
+  return_arr.sort((a, b) => {
+    return new Date(b.Date) - new Date(a.Date)
+  })
   res.send(return_arr)
 })
 

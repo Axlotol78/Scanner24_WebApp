@@ -1,6 +1,7 @@
 
 // Function to handle sign-in button click
-backend_endpoint = 'https://scanner24-webapp.onrender.com'
+const backend_endpoint = 'https://scanner24-webapp.onrender.com'
+// const backend_endpoint = 'http://localhost:3000'
 function signIn() {
     // Make an AJAX request to the backend endpoint '/google-login'
     console.log("clicky")

@@ -1,4 +1,5 @@
 const backend_endpoint = 'https://scanner24-webapp.onrender.com'
+// const backend_endpoint = 'http://localhost:3000'
 
 //extract params from url:
 
@@ -95,7 +96,7 @@ async function getEmails() {
             row.appendChild(emailCell);
             let spam_chance
             for (const score of email.spam_score) {
-                if (score.label === "Spam") {
+                if (score.label === "LABEL_0") {
                     spam_chance = score.score
                 }
             }
