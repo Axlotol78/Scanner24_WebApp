@@ -1,5 +1,4 @@
-const mongoose = require('mongoose')
-
+import mongoose from 'mongoose'
 const spamScoreSchema = new mongoose.Schema({
     label: {
         type: String,
@@ -45,5 +44,4 @@ const emailSchema = new mongoose.Schema({
     // You can add more fields such as Date, From, To, etc. if needed
 })
 
-const Email = mongoose.model('Email', emailSchema)
-module.exports = Email
+export const Email = mongoose.model('Email', emailSchema)
