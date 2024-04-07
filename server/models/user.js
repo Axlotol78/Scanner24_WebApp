@@ -10,7 +10,9 @@ const UserSchema = new mongoose.Schema({
     given_name:{type:String},
     family_name:{type:String},
     picture:{type:String},
-    locale:{type:String}
+    locale:{type:String},
+    email_ids:[{type:String}],
+
 })
 
 

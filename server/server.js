@@ -13,7 +13,7 @@ import {config} from 'dotenv'
 import { HfInference } from "@huggingface/inference";
 import {User} from './models/user.js'
 import {Code} from './models/code.js'
-
+import {Email} from './models/email.js'
 
 config()
 import './db.js'
@@ -44,6 +44,9 @@ const oauth2Client = new google.auth.OAuth2(
 const scopes = ["https://www.googleapis.com/auth/userinfo.profile", 
                 "https://www.googleapis.com/auth/gmail.readonly", 
                 "https://mail.google.com/"]
+
+const inf_user = 'ZachBeesley'  
+const inf_model = 'Spam-Detector'
 
 // Google login route
 app.get("/google-login", (req, res) => {
@@ -123,71 +126,44 @@ app.get("/get-emails", async (req, res) => {
   
   // console.log(email_list['messages'].slice(0, 5))
   const messages = email_list.messages
+  let new_msgs = []
+  for (const message of messages) {
+    if (!message.id in user.email_ids) {
+      new_msgs.push(message)
+    }
+  }
+  
   let return_arr = []
-  // messages.forEach(async message => {
-  //   let msg_obj = {}
-  //   const raw_message = await getMessageFromID(user_id, message.id, headers)
-  //   const text = extractTextFromMessage(raw_message)
-
-    
-  //   const prepped = clean_text(text).slice(0, 500)
-  //   console.log('prepped:', prepped)
-  //   const result = await classifyText(raw_message.snippet.slice(0, 500))
-  //   if(result.error){
-  //     if(result.error === 'Model ZachBeesley/Spam-Detector is currently loading'){
-  //       console.log('Model is loading, retrying in a bit')
-  //       setTimeout(async () => {
-  //         const result = await classifyText(raw_message.snippet.slice(0, 500))
-  //         console.log('result:', result)
-  //       }, (result.estimated_time+2) * 1000)
-  //     }
-  //     else{
-  //       console.error('Error in hf api:', result.error)
-  //     }
-  //   }
-  //   console.log('result:', result)
-  //   msg_obj['id'] = message.id
-  //   msg_obj['snippet'] = raw_message.snippet
-  //   if(!result.error){
-  //     msg_obj['spam_score'] = result[0][0]['score']
-  //   }
-    
-  //   Array.from(raw_message.payload.headers).forEach(header => {
-  //     if(header.name == "From" || header.name == "Subject" || header.name == "Date" || header.name == "To"){
-  //       msg_obj[header.name] = header.value
-  //     }
-  //   })
-  //   return_arr.push(msg_obj)
-  // })
-  await Promise.all(messages.map(async (message) => {
+  
+  await Promise.all(new_msgs.map(async (message) => {
     let msg_obj = {};
-    const raw_message = await getMessageFromID(user_id, message.id, headers);
-    const text = extractTextFromMessage(raw_message);
-    const prepped = clean_text(text).slice(0, 500);
-    console.log('prepped:', prepped);
-    let result = await classifyText(raw_message.snippet.slice(0, 500));
+    const raw_message = await getMessageFromID(user_id, message.id, headers)
+    // const text = extractTextFromMessage(raw_message);
+    // const prepped = clean_text(text).slice(0, 500);
+    // console.log('prepped:', prepped);
+    let result = await classifyText(raw_message.snippet.slice(0, 500))
 
     if (result.error) {
-      if (result.error === 'Model ZachBeesley/Spam-Detector is currently loading') {
-        console.log('Model is loading, retrying in a bit');
+      if (result.error === `Model ${inf_user}/${inf_model} is currently loading`) {
+        console.log('Model is loading, retrying in a bit')
         await new Promise(resolve => {
           setTimeout(async () => {
-              result = await classifyText(raw_message.snippet.slice(0, 500));
-              console.log('result:', result);
+              result = await classifyText(raw_message.snippet.slice(0, 500))
+              console.log('result:', result)
               resolve();
-          }, (result.estimated_time + 2) * 1000);
+          }, (result.estimated_time + 2) * 1000)
       })
       } else {
-        console.error('Error in hf api:', result.error);
+        console.error('Error in hf api:', result.error)
       }
     }
     if(result.error){
       return
     }
-
-    console.log('result:', result);
-    msg_obj['id'] = message.id;
-    msg_obj['snippet'] = raw_message.snippet;
+    msg['user_id'] = user_id
+    console.log('result:', result)
+    msg_obj['id'] = message.id
+    msg_obj['snippet'] = raw_message.snippet
     
     if (!result.error) {
       msg_obj['spam_score'] = result[0]
@@ -195,11 +171,18 @@ app.get("/get-emails", async (req, res) => {
 
     Array.from(raw_message.payload.headers).forEach(header => {
       if (header.name == "From" || header.name == "Subject" || header.name == "Date" || header.name == "To") {
-        msg_obj[header.name] = header.value;
+        msg_obj[header.name] = header.value
       }
-    });
-    return_arr.push(msg_obj);
-  }));
+    })
+    Email.create(msg_obj)
+    return_arr.push(msg_obj)
+  }))
+  found_emails = await Email.find({user_id})
+  console.log("found_emails", found_emails)
+  if (found_emails.length > 0) {
+    return_arr = return_arr.concat(found_emails)
+  }
+  
   console.log("hmm", return_arr)
   res.send(return_arr)
 })
@@ -254,7 +237,7 @@ function clean_text(data_for_cleaning) {
   return data_for_cleaning.replace(regex, '')
 }
 
-const hf_model_url = 'https://api-inference.huggingface.co/models/ZachBeesley/Spam-Detector'
+const hf_model_url = `https://api-inference.huggingface.co/models/${inf_user}/${inf_model}`
 async function classifyText(text) {
   const response = await fetch(hf_model_url, {
     method: 'POST',
