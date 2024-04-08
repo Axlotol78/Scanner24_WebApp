@@ -1,3 +1,5 @@
+import { WavLMPreTrainedModel } from "@xenova/transformers"
+
 // Fetch data and generate charts
 const backend_endpoint = 'https://scanner24-webapp.onrender.com'
 // const backend_endpoint = 'http://localhost:3000'
@@ -6,7 +8,9 @@ async function generateCharts() {
         const user = localStorage.getItem('auth')
         if (user == null) {
             console.error('User not found')
+            window.location.href = 'index.html' // Redirect to homepage
             return
+
         }
         const userObj = JSON.parse(user)
         const response = await fetch(backend_endpoint + '/get-emails?user_id=' + userObj.id)
@@ -26,9 +30,11 @@ async function generateCharts() {
             } else if (email.spam_score < 0.7) {
                 mediumRiskCount++
             } else{
+                console.log(email.spam_score)
                 highRiskCount++
             }
         })
+
 
         // Generate pie chart
         const pieChartOptions = {
