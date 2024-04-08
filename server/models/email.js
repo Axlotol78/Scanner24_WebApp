@@ -24,20 +24,16 @@ const emailSchema = new mongoose.Schema({
         required: true
     },
     From:{
-        type: String,
-        required: true
+        type: String
     },
     To:{
-        type: String,
-        required: true
+        type: String
     },
     Date:{
-        type: String,
-        required: true
+        type: String
     },
     Subject:{
-        type: String,
-        required: true
+        type: String
     },
     // Add other fields as needed
     spam_score: [spamScoreSchema]

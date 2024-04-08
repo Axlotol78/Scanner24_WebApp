@@ -123,6 +123,12 @@ app.get("/get-emails", async (req, res) => {
     'Authorization': `Bearer ${user.access_token}`
   
   }
+  //wait 1 seconds
+  await new Promise(resolve => {
+    setTimeout(() => {
+      resolve()
+    }, 1000)
+  })
   const email_list_data = await fetch('https://www.googleapis.com/gmail/v1/users/' + user_id + '/messages', {
     headers: headers
   })
