@@ -12,7 +12,7 @@ function logout() {
 function getRiskLevel(spamChance) {
     if (spamChance <= 0.5) {
         return 'No Risk';
-    } else if (spamChance <= 0.7) {
+    } else if (spamChance <= 0.82) {
         return 'Medium Risk';
     } else {
         return 'High Risk';

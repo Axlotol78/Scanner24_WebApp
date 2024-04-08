@@ -32,7 +32,7 @@ async function generateCharts() {
             }
             if (spam_chance < 0.5) {
                 noRiskCount++
-            } else if (spam_chance < 0.7) {
+            } else if (spam_chance < 0.82) {
                 mediumRiskCount++
             } else{
                 console.log(spam_chance)
