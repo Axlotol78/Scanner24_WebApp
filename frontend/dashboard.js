@@ -119,7 +119,7 @@ async function getEmails() {
         console.error('There was a problem with the fetch operation:', error);
     }
 }
-document.getElementById('signOutButton').addEventListener('click', logout);
+document.getElementById('logout-btn').addEventListener('click', logout);
 // Check if there's an authentication item in local storage
 const authItem = localStorage.getItem('auth');
 

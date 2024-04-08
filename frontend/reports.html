@@ -5,28 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reports</title>
     <link rel="stylesheet" href="reports.css">
+    <style>
+        /* Sidebar Styles */
+        .sidebar {
+            height: 100%;
+            width: 10%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #f8f9fa;
+            padding-top: 20px;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            padding: 10px;
+        }
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #333;
+        }
+        .sidebar ul li a:hover {
+            color: #007bff;
+        }
+        .sidebar .logout-button {
+            position: absolute;
+            bottom: 20px;
+            left: 10px;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3 sidebar">
-                <nav class="navbar">
-                    <div class="navbar-header">
-                        <a class="navbar-brand" href="#">Reports</a>
-                    </div>
-                    <ul class="nav navbar-nav">
-                        <li><a href="dashboard.html">Dashboard</a></li>
-                        <li><a href="about.html">About</a></li>
-                    </ul>
-                    <button id="logout-btn">Logout</button>
-                </nav>
-            </div>
-        </div>
-        <div class="col-md-9">
+    <div class="sidebar">
+        <ul>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+        <button id="logout-btn" class="logout-button">Sign Out</button>
+    </div>
+    <div class="container" style="margin-left: 10%;">
+        
             <h1>Reports</h1>
             <div id="pieChart"></div>
             <div id="barChart"></div>
-        </div>
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>

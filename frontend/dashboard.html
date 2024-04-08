@@ -1,15 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>My Dashboard</title>
+    <title>Scanner24 Dashboard</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="dashboard.css">
+    <style>
+        /* Sidebar Styles */
+        .sidebar {
+            height: 100%;
+            width: 10%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #f8f9fa;
+            padding-top: 20px;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            padding: 10px;
+        }
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #333;
+        }
+        .sidebar ul li a:hover {
+            color: #007bff;
+        }
+        .sidebar .logout-button {
+            position: absolute;
+            bottom: 20px;
+            left: 10px;
+        }
+    </style>
 </head>
 <body>
-    <div class = "container">
-        <h1>Welcome to My Dashboard</h1>
-        <div id = "total"> Total Messages:</div>
-        <table class = "table ">
+    <div class="sidebar">
+        <ul>
+            <li><a href="reports.html">Reports</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+        <button id="logout-btn" class="logout-button">Sign Out</button>
+    </div>
+    <div class="container" style="margin-left: 10%;">
+        <h1>Dashboard</h1>
+        <div id="total"> Total Messages:</div>
+        <table class="table">
             <thead>
                 <tr>
                     <th>Date</th>
@@ -23,7 +61,7 @@
             <tbody id="messages">
             </tbody>
         </table>
-        <button id="signOutButton">Sign out</button>
+        <!-- <button id="signOutButton">Sign out</button> -->
         <script src="dashboard.js"></script>
     </div>
 </body>
