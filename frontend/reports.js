@@ -1,5 +1,3 @@
-import { WavLMPreTrainedModel } from "@xenova/transformers"
-
 // Fetch data and generate charts
 const backend_endpoint = 'https://scanner24-webapp.onrender.com'
 // const backend_endpoint = 'http://localhost:3000'
