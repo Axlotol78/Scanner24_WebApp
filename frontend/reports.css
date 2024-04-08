@@ -8,11 +8,12 @@
 .sidebar {
     background-color: #f4f4f4;
     height: 100vh;
-    flex-basis: 25%; /* Set sidebar width */
+    flex-basis: 250px; /* Set sidebar width */
+    flex-shrink: 0; /* Prevent sidebar from shrinking */
 }
 
 .col-md-9 {
-    flex-basis: 75%; /* Set main content width */
+    flex-grow: 1; /* Allow main content area to grow */
 }
 
 .navbar {
