@@ -87,5 +87,12 @@ async function generateCharts() {
         console.error('There was a problem with the fetch operation:', error)
     }
 }
+function logout() {
+    localStorage.removeItem('auth');
+    window.location.href = 'index.html'; // Redirect to homepage
+}
+// logout-btn
+document.getElementById('logout-btn').addEventListener('click', logout)
+
 
 generateCharts()

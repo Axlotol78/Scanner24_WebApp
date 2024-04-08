@@ -1,0 +1,61 @@
+/* Custom Styles */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+}
+
+.sidebar {
+    background-color: #f4f4f4;
+    height: 100vh;
+    flex-basis: 25%; /* Set sidebar width */
+}
+
+.col-md-9 {
+    flex-basis: 75%; /* Set main content width */
+}
+
+.navbar {
+    padding: 20px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.navbar-brand {
+    font-size: 24px;
+    font-weight: bold;
+    padding: 0 15px;
+}
+
+.navbar-nav {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0;
+}
+
+.navbar-nav li {
+    margin-bottom: 10px;
+}
+
+.navbar-nav li a {
+    text-decoration: none;
+    color: #333;
+    font-size: 18px;
+    padding: 5px 15px;
+    display: block;
+}
+
+.logout-btn {
+    display: block;
+    margin-top: auto;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    width: calc(100% - 30px); /* Adjust width to account for padding */
+}
+
+.logout-btn:hover {
+    background-color: #555;
+}
