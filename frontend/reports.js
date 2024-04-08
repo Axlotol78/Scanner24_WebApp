@@ -21,14 +21,21 @@ async function generateCharts() {
         let noRiskCount = 0
         let mediumRiskCount = 0
         let highRiskCount = 0
+        
         emails.forEach(email => {
             // const riskLevel = email.spam_score < 0.5 ? 'No Risk' : email.spam_score < 0.7 ? 'Medium Risk' : 'High Risk'
-            if (email.spam_score < 0.5) {
+            let spam_chance
+            for(const score of email.spam_score){
+                if(score.label == 'LABEL_0'){
+                    spam_chance = score.score
+                }
+            }
+            if (spam_chance < 0.5) {
                 noRiskCount++
-            } else if (email.spam_score < 0.7) {
+            } else if (spam_chance < 0.7) {
                 mediumRiskCount++
             } else{
-                console.log(email.spam_score)
+                console.log(spam_chance)
                 highRiskCount++
             }
         })
