@@ -85,9 +85,9 @@ async function getEmails() {
             const fromCell = document.createElement('td');
             fromCell.textContent = email.From;
             row.appendChild(fromCell);
-            const toCell = document.createElement('td');
-            toCell.textContent = email.To;
-            row.appendChild(toCell);
+            // const toCell = document.createElement('td');
+            // toCell.textContent = email.To;
+            // row.appendChild(toCell);
             const subjectCell = document.createElement('td');
             subjectCell.textContent = email.Subject;
             row.appendChild(subjectCell);
