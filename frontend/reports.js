@@ -82,7 +82,7 @@ async function generateCharts() {
             }
         }
         const barChart = new ApexCharts(document.querySelector("#barChart"), barChartOptions)
-        barChart.render()
+        // barChart.render()
     } catch (error) {
         console.error('There was a problem with the fetch operation:', error)
     }
