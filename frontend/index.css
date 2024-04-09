@@ -5,10 +5,15 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
+    font-family: Arial, sans-serif; /* Change font */
 }
 
 .container {
     text-align: center;
+}
+
+.title {
+    margin-bottom: 20px; /* Add space between title and button */
 }
 
 button {
