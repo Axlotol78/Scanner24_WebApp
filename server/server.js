@@ -138,18 +138,25 @@ app.get("/get-emails", async (req, res) => {
   const messages = email_list.messages
   
   let new_msgs = []
-  console.log('eh:', user.email_ids.length)
-  console.log('messages from g api:', messages.length)
-  if (user.email_ids.length == 0) {
-    new_msgs = messages
-  }else{
 
-    for (const message of messages) {
-      if (!message.id in user.email_ids) {
-        
-        new_msgs.push(message)
+  console.log('eh:', user.email_ids.length)
+  if(messages){
+    
+    console.log('messages from g api:', messages.length)
+    if (user.email_ids.length == 0) {
+      new_msgs = messages
+    }else{
+  
+      for (const message of messages) {
+        if (!message.id in user.email_ids) {
+          
+          new_msgs.push(message)
+        }
       }
     }
+  }
+  else{
+    console.log('no messages from g api')
   }
 
   console.log('new_msgs:', new_msgs.length)
