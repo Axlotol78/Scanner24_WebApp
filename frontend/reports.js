@@ -48,6 +48,7 @@ async function generateCharts() {
             },
             series: [noRiskCount, mediumRiskCount, highRiskCount],
             labels: ['No Risk', 'Medium Risk', 'High Risk'],
+            innerWidth: 100
         }
         const pieChart = new ApexCharts(document.querySelector("#pieChart"), pieChartOptions)
         pieChart.render()
