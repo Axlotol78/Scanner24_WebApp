@@ -168,6 +168,9 @@ app.get("/get-emails", async (req, res) => {
     // const text = extractTextFromMessage(raw_message);
     // const prepped = clean_text(text).slice(0, 500);
     // console.log('prepped:', prepped);
+    if (raw_message == null) {
+      return
+    }
     let result = await classifyText(raw_message.snippet.slice(0, 500))
 
     if (result.error) {
